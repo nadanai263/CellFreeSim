@@ -1,0 +1,16 @@
+// Created by libAntimony v2.9.4
+// Compartments and Species:
+species S1, S2;
+
+// Reactions:
+_J0: S1 -> S2; k1*S1;
+
+// Species initializations:
+S1 = 100;
+S2 = 0;
+
+// Variable initializations:
+k1 = 0.1;
+
+// Other declarations:
+const k1;
