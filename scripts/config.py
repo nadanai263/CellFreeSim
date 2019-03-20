@@ -1,9 +1,7 @@
 # config.py
 import numpy as np
 
-
 # Set filename and input and output paths.
-
 PATH_IN = '../model/'
 FILENAME_IN = 'model' # Antimony model file as input
 PATH_OUT = '../cythonized_model/'
@@ -11,8 +9,12 @@ FILENAME_OUT = 'model.pyx'
 PATH_PLOT = '../plots/'
 
 # Set simulation parameters
-TMAX = 100
-NSTEPS = 100 
+TMAX = 200
+NSTEPS = 200 
 
-# Derived quantities; don't set these
-time = np.linspace(0,TMAX,NSTEPS)
+# Set chemostat experiment parameters
+DIL_FRAC = 0.2
+INTERVAL_IMG = 0.2
+INTERVAL_DIL = 3
+INDEX_REFRESH = [3] # which species are refreshed?
+

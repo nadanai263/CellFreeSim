@@ -49,11 +49,15 @@ def writeCython(speciesIds,speciesValues,parameterIds,parameterValues,derivative
         # Imports
         file.writelines('import numpy as np\n')
         file.writelines('cimport numpy as np\n')
-        file.writelines('cimport cython\n\n')
+        file.writelines('cimport cython\n')
+        file.writelines('from libc.math cimport exp\n')
+        file.writelines('from libc.math cimport sqrt\n')
+        file.writelines('from libc.math cimport pow\n\n')
 
         # Model definition
         file.writelines('@cython.cdivision(True) # Zero-division checking turned off\n')
         file.writelines('@cython.boundscheck(False) # Bounds checking turned off for this function\n')
+        file.writelines('@cython.wraparound(False)  # turn off negative index wrapping for entire function\n')
         file.writelines('def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):\n\n')
 
         # Species

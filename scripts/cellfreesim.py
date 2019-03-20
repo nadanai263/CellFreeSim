@@ -19,7 +19,6 @@ import sys
 # 3. Generate cython file and compile
 # 4. Solve ODE using compiled cython file
 
-
 # Import functions and configuration parameters
 try:
     import functions as cfs
@@ -37,7 +36,6 @@ if not os.path.exists(PATH_OUT):
 
 
 def main():
-
     print()
     print(pyfiglet.figlet_format("LBNC - EPFL"))
     print('Welcome to the LBNC Cell Free Simulator V1.0.0, 2019')
@@ -81,11 +79,49 @@ def main():
             y0 = np.array([float(value) for value in speciesValues])
             params = np.array([float(value) for value in parameterValues])
 
+            time = np.linspace(0,TMAX,NSTEPS)
             psoln = odeint(model.model, y0, time, args=(params,)) # scipy-Fortran RK4 solver
 
             for i in range(psoln.shape[1]):
-            	plt.plot(time,psoln[:,i]);
+                plt.plot(time,psoln[:,i]);
             plt.savefig(PATH_PLOT+'sim.pdf')
+            plt.show();
+            print('\n\n\n')
+
+        elif commands_str=='5':
+            # 4. Run chemostat experiment
+            sys.path.insert(0, PATH_OUT)
+            import model as model
+
+            y0 = np.array([float(value) for value in speciesValues])
+            params = np.array([float(value) for value in parameterValues])
+            ndim = y0.shape[0]
+
+            # Work out what time dilutions happen 
+            ndilsteps=np.int((TMAX)/(INTERVAL_DIL)+1)
+            dilutiontimes=np.linspace(0,TMAX,ndilsteps) 
+
+            nrunsteps=np.int((INTERVAL_DIL)/(INTERVAL_IMG)+1)
+            timeBetweenDil=np.linspace(0,INTERVAL_DIL,nrunsteps)
+            timeTotal=np.linspace(0,TMAX,(nrunsteps-1)*(ndilsteps-1)+1)
+            dataout=np.zeros(len(timeTotal)*ndim).reshape(len(timeTotal),ndim)
+
+            yTransfer = y0
+            for i in range(len(dilutiontimes)-1):
+
+                psoln = odeint(model.model, yTransfer, timeBetweenDil, args=(params,)) # scipy-Fortran RK4 solver
+                indStart=i*(nrunsteps-1)+1
+                indStop=(i+1)*(nrunsteps-1)+1
+                dataout[indStart:indStop,:]=psoln[1:]
+
+                # Dilute everything and refresh appropriate species
+                yTransfer = psoln[-1,:]*(1-DIL_FRAC)
+                for ind in INDEX_REFRESH:
+                    yTransfer[ind] = yTransfer[ind]+DIL_FRAC*1
+
+            for i in range(dataout.shape[1]):
+                plt.plot(timeTotal,dataout[:,i]);
+            plt.savefig(PATH_PLOT+'chemostat.pdf')
             plt.show();
             print('\n\n\n')
 
@@ -105,6 +141,7 @@ def main_menu():
     print('2. Generate cython file')
     print('3. Cythonize!')
     print('4. Run simulator')
+    print('5. Run chemostat experiment')
     print('Press ENTER to exit')
     print()
 
