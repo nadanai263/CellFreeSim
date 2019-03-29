@@ -1,0 +1,26 @@
+// Created by libAntimony v2.9.4
+// Repressilator
+// Tiny amounts of leak kill this
+// Cooperativity must be high
+// binding must be tight
+
+// Compartments and Species:
+species alpha, S1, S2, S3;
+
+// Reactions:
+_J0: alpha -> ; alpha*L1;
+_J1:  -> S1; alpha*k1*K^n/(K^n+S3^n);
+_J2:  -> S2; alpha*k1*K^n/(K^n+S1^n);
+_J3:  -> S3; alpha*k1*K^n/(K^n+S2^n);
+
+// Species initializations:
+alpha = 1;
+S1 = 0.02;
+S2 = 0.0;
+S3 = 0.0;
+
+// Variable initializations:
+L1 = 0.01;
+k1 = 1;
+K = 0.01;
+n = 2;

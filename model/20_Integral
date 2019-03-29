@@ -1,0 +1,31 @@
+// Created by libAntimony v2.9.4
+// Integral control
+// Relies on differential degradation between S1 and S2
+// Does not work for chemostat or batch rxns
+
+// Compartments and Species:
+species alpha, S1, S2, setpoint;
+
+// Reactions:
+_J0: alpha -> ; alpha*L1;
+_J1:  -> S1; alpha*k1*K1^n/(K1^n+S2^n)- delta*S1;
+_J2:  -> S2; alpha*k1*S1 - delta*S2/(S2+epsilon);
+_J3: -> setpoint; 0;
+
+// Species initializations:
+alpha = 1;
+S1 = 0.0;
+S2 = 0.0;
+
+// Variable initializations:
+L1 = 0.0;
+k1 = 0.5;
+K1 = 0.1;
+K2 = 0.1;
+epsilon = 0.001
+n = 2;
+delta = 0.3;
+
+setpoint = delta/(alpha*k1);
+
+// Other declarations:

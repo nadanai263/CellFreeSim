@@ -4,11 +4,11 @@
 {
     "distutils": {
         "depends": [
-            "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/include/numpy/arrayobject.h",
-            "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/include/numpy/ufuncobject.h"
+            "/Users/nadanai263/.virtualenvs/cfs/lib/python3.6/site-packages/numpy/core/include/numpy/arrayobject.h",
+            "/Users/nadanai263/.virtualenvs/cfs/lib/python3.6/site-packages/numpy/core/include/numpy/ufuncobject.h"
         ],
         "include_dirs": [
-            "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/include"
+            "/Users/nadanai263/.virtualenvs/cfs/lib/python3.6/site-packages/numpy/core/include"
         ],
         "name": "model",
         "sources": [
@@ -1662,22 +1662,20 @@ static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
-static const char __pyx_k_m[] = "m";
-static const char __pyx_k_p[] = "p";
+static const char __pyx_k_K[] = "K";
+static const char __pyx_k_n[] = "n";
 static const char __pyx_k_t[] = "t";
 static const char __pyx_k_y[] = "y";
 static const char __pyx_k_L1[] = "L1";
-static const char __pyx_k_L2[] = "L2";
+static const char __pyx_k_S1[] = "S1";
+static const char __pyx_k_S2[] = "S2";
+static const char __pyx_k_S3[] = "S3";
+static const char __pyx_k_k1[] = "k1";
 static const char __pyx_k_np[] = "np";
-static const char __pyx_k_beta[] = "beta";
-static const char __pyx_k_kmat[] = "kmat";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
-static const char __pyx_k_pmat[] = "pmat";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_alpha[] = "alpha";
-static const char __pyx_k_delta[] = "delta";
-static const char __pyx_k_gamma[] = "gamma";
 static const char __pyx_k_model[] = "model";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
@@ -1700,23 +1698,23 @@ static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string 
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_ImportError;
+static PyObject *__pyx_n_s_K;
 static PyObject *__pyx_n_s_L1;
-static PyObject *__pyx_n_s_L2;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
+static PyObject *__pyx_n_s_S1;
+static PyObject *__pyx_n_s_S2;
+static PyObject *__pyx_n_s_S3;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_alpha;
-static PyObject *__pyx_n_s_beta;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_delta;
 static PyObject *__pyx_n_s_derivs;
-static PyObject *__pyx_n_s_gamma;
 static PyObject *__pyx_n_s_import;
-static PyObject *__pyx_n_s_kmat;
-static PyObject *__pyx_n_s_m;
+static PyObject *__pyx_n_s_k1;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_model;
 static PyObject *__pyx_kp_s_model_pyx;
+static PyObject *__pyx_n_s_n;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
@@ -1724,9 +1722,7 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
-static PyObject *__pyx_n_s_p;
 static PyObject *__pyx_n_s_params;
-static PyObject *__pyx_n_s_pmat;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_t;
 static PyObject *__pyx_n_s_test;
@@ -1751,7 +1747,7 @@ static PyObject *__pyx_codeobj__9;
  * @cython.wraparound(False)  # turn off negative index wrapping for entire function
  * def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):             # <<<<<<<<<<<<<<
  * 
- * 	cdef double m = y[0]
+ * 	cdef double alpha = y[0]
  */
 
 /* Python wrapper */
@@ -1834,17 +1830,15 @@ static PyObject *__pyx_pw_5model_1model(PyObject *__pyx_self, PyObject *__pyx_ar
 }
 
 static PyObject *__pyx_pf_5model_model(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_y, CYTHON_UNUSED double __pyx_v_t, PyArrayObject *__pyx_v_params) {
-  double __pyx_v_m;
-  double __pyx_v_p;
-  double __pyx_v_pmat;
   double __pyx_v_alpha;
-  double __pyx_v_beta;
-  double __pyx_v_gamma;
-  double __pyx_v_delta;
-  double __pyx_v_kmat;
+  double __pyx_v_S1;
+  double __pyx_v_S2;
+  double __pyx_v_S3;
   double __pyx_v_L1;
-  double __pyx_v_L2;
-  double __pyx_v_derivs[5];
+  double __pyx_v_k1;
+  double __pyx_v_K;
+  double __pyx_v_n;
+  double __pyx_v_derivs[4];
   __Pyx_LocalBuf_ND __pyx_pybuffernd_params;
   __Pyx_Buffer __pyx_pybuffer_params;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_y;
@@ -1859,10 +1853,8 @@ static PyObject *__pyx_pf_5model_model(CYTHON_UNUSED PyObject *__pyx_self, PyArr
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   Py_ssize_t __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
-  double __pyx_t_11[5];
-  PyObject *__pyx_t_12 = NULL;
+  double __pyx_t_9[4];
+  PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("model", 0);
   __pyx_pybuffer_y.pybuffer.buf = NULL;
   __pyx_pybuffer_y.refcount = 0;
@@ -1886,127 +1878,106 @@ static PyObject *__pyx_pf_5model_model(CYTHON_UNUSED PyObject *__pyx_self, PyArr
   /* "model.pyx":15
  * def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):
  * 
- * 	cdef double m = y[0]             # <<<<<<<<<<<<<<
- * 	cdef double p = y[1]
- * 	cdef double pmat = y[2]
+ * 	cdef double alpha = y[0]             # <<<<<<<<<<<<<<
+ * 	cdef double S1 = y[1]
+ * 	cdef double S2 = y[2]
  */
   __pyx_t_1 = 0;
-  __pyx_v_m = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_y.diminfo[0].strides));
+  __pyx_v_alpha = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_y.diminfo[0].strides));
 
   /* "model.pyx":16
  * 
- * 	cdef double m = y[0]
- * 	cdef double p = y[1]             # <<<<<<<<<<<<<<
- * 	cdef double pmat = y[2]
- * 	cdef double alpha = y[3]
+ * 	cdef double alpha = y[0]
+ * 	cdef double S1 = y[1]             # <<<<<<<<<<<<<<
+ * 	cdef double S2 = y[2]
+ * 	cdef double S3 = y[3]
  */
   __pyx_t_2 = 1;
-  __pyx_v_p = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_2, __pyx_pybuffernd_y.diminfo[0].strides));
+  __pyx_v_S1 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_2, __pyx_pybuffernd_y.diminfo[0].strides));
 
   /* "model.pyx":17
- * 	cdef double m = y[0]
- * 	cdef double p = y[1]
- * 	cdef double pmat = y[2]             # <<<<<<<<<<<<<<
- * 	cdef double alpha = y[3]
- * 	cdef double beta = y[4]
+ * 	cdef double alpha = y[0]
+ * 	cdef double S1 = y[1]
+ * 	cdef double S2 = y[2]             # <<<<<<<<<<<<<<
+ * 	cdef double S3 = y[3]
+ * 
  */
   __pyx_t_3 = 2;
-  __pyx_v_pmat = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_y.diminfo[0].strides));
+  __pyx_v_S2 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_3, __pyx_pybuffernd_y.diminfo[0].strides));
 
   /* "model.pyx":18
- * 	cdef double p = y[1]
- * 	cdef double pmat = y[2]
- * 	cdef double alpha = y[3]             # <<<<<<<<<<<<<<
- * 	cdef double beta = y[4]
+ * 	cdef double S1 = y[1]
+ * 	cdef double S2 = y[2]
+ * 	cdef double S3 = y[3]             # <<<<<<<<<<<<<<
  * 
+ * 	cdef double L1 = params[0]
  */
   __pyx_t_4 = 3;
-  __pyx_v_alpha = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_y.diminfo[0].strides));
+  __pyx_v_S3 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_y.diminfo[0].strides));
 
-  /* "model.pyx":19
- * 	cdef double pmat = y[2]
- * 	cdef double alpha = y[3]
- * 	cdef double beta = y[4]             # <<<<<<<<<<<<<<
+  /* "model.pyx":20
+ * 	cdef double S3 = y[3]
  * 
- * 	cdef double gamma = params[0]
+ * 	cdef double L1 = params[0]             # <<<<<<<<<<<<<<
+ * 	cdef double k1 = params[1]
+ * 	cdef double K = params[2]
  */
-  __pyx_t_5 = 4;
-  __pyx_v_beta = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_y.diminfo[0].strides));
+  __pyx_t_5 = 0;
+  __pyx_v_L1 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_params.diminfo[0].strides));
 
   /* "model.pyx":21
- * 	cdef double beta = y[4]
  * 
- * 	cdef double gamma = params[0]             # <<<<<<<<<<<<<<
- * 	cdef double delta = params[1]
- * 	cdef double kmat = params[2]
+ * 	cdef double L1 = params[0]
+ * 	cdef double k1 = params[1]             # <<<<<<<<<<<<<<
+ * 	cdef double K = params[2]
+ * 	cdef double n = params[3]
  */
-  __pyx_t_6 = 0;
-  __pyx_v_gamma = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_params.diminfo[0].strides));
+  __pyx_t_6 = 1;
+  __pyx_v_k1 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_params.diminfo[0].strides));
 
   /* "model.pyx":22
+ * 	cdef double L1 = params[0]
+ * 	cdef double k1 = params[1]
+ * 	cdef double K = params[2]             # <<<<<<<<<<<<<<
+ * 	cdef double n = params[3]
  * 
- * 	cdef double gamma = params[0]
- * 	cdef double delta = params[1]             # <<<<<<<<<<<<<<
- * 	cdef double kmat = params[2]
- * 	cdef double L1 = params[3]
  */
-  __pyx_t_7 = 1;
-  __pyx_v_delta = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_params.diminfo[0].strides));
+  __pyx_t_7 = 2;
+  __pyx_v_K = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_params.diminfo[0].strides));
 
   /* "model.pyx":23
- * 	cdef double gamma = params[0]
- * 	cdef double delta = params[1]
- * 	cdef double kmat = params[2]             # <<<<<<<<<<<<<<
- * 	cdef double L1 = params[3]
- * 	cdef double L2 = params[4]
- */
-  __pyx_t_8 = 2;
-  __pyx_v_kmat = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_params.diminfo[0].strides));
-
-  /* "model.pyx":24
- * 	cdef double delta = params[1]
- * 	cdef double kmat = params[2]
- * 	cdef double L1 = params[3]             # <<<<<<<<<<<<<<
- * 	cdef double L2 = params[4]
+ * 	cdef double k1 = params[1]
+ * 	cdef double K = params[2]
+ * 	cdef double n = params[3]             # <<<<<<<<<<<<<<
  * 
+ * 	cdef double derivs[4]
  */
-  __pyx_t_9 = 3;
-  __pyx_v_L1 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_params.diminfo[0].strides));
+  __pyx_t_8 = 3;
+  __pyx_v_n = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_params.diminfo[0].strides));
 
-  /* "model.pyx":25
- * 	cdef double kmat = params[2]
- * 	cdef double L1 = params[3]
- * 	cdef double L2 = params[4]             # <<<<<<<<<<<<<<
- * 
- * 	cdef double derivs[5]
- */
-  __pyx_t_10 = 4;
-  __pyx_v_L2 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_params.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_params.diminfo[0].strides));
-
-  /* "model.pyx":29
- * 	cdef double derivs[5]
+  /* "model.pyx":27
+ * 	cdef double derivs[4]
  * 
  * 	derivs = [             # <<<<<<<<<<<<<<
- * 	alpha-gamma*m,
- * 	beta*m-delta*p-kmat*p,
+ * 	-alpha*L1,
+ * 	alpha*k1*pow(K,n)/(pow(K,n)+pow(S3,n)),
  */
-  __pyx_t_11[0] = (__pyx_v_alpha - (__pyx_v_gamma * __pyx_v_m));
-  __pyx_t_11[1] = (((__pyx_v_beta * __pyx_v_m) - (__pyx_v_delta * __pyx_v_p)) - (__pyx_v_kmat * __pyx_v_p));
-  __pyx_t_11[2] = ((__pyx_v_kmat * __pyx_v_p) - (__pyx_v_delta * __pyx_v_pmat));
-  __pyx_t_11[3] = ((-__pyx_v_L1) * __pyx_v_alpha);
-  __pyx_t_11[4] = ((-__pyx_v_L2) * __pyx_v_beta);
-  memcpy(&(__pyx_v_derivs[0]), __pyx_t_11, sizeof(__pyx_v_derivs[0]) * (5));
+  __pyx_t_9[0] = ((-__pyx_v_alpha) * __pyx_v_L1);
+  __pyx_t_9[1] = (((__pyx_v_alpha * __pyx_v_k1) * pow(__pyx_v_K, __pyx_v_n)) / (pow(__pyx_v_K, __pyx_v_n) + pow(__pyx_v_S3, __pyx_v_n)));
+  __pyx_t_9[2] = (((__pyx_v_alpha * __pyx_v_k1) * pow(__pyx_v_K, __pyx_v_n)) / (pow(__pyx_v_K, __pyx_v_n) + pow(__pyx_v_S1, __pyx_v_n)));
+  __pyx_t_9[3] = (((__pyx_v_alpha * __pyx_v_k1) * pow(__pyx_v_K, __pyx_v_n)) / (pow(__pyx_v_K, __pyx_v_n) + pow(__pyx_v_S2, __pyx_v_n)));
+  memcpy(&(__pyx_v_derivs[0]), __pyx_t_9, sizeof(__pyx_v_derivs[0]) * (4));
 
-  /* "model.pyx":35
- * 	-L1*alpha,
- * 	-L2*beta]
+  /* "model.pyx":32
+ * 	alpha*k1*pow(K,n)/(pow(K,n)+pow(S1,n)),
+ * 	alpha*k1*pow(K,n)/(pow(K,n)+pow(S2,n))]
  * 	return derivs             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_12 = __Pyx_carray_to_py_double(__pyx_v_derivs, 5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_r = __pyx_t_12;
-  __pyx_t_12 = 0;
+  __pyx_t_10 = __Pyx_carray_to_py_double(__pyx_v_derivs, 4); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_r = __pyx_t_10;
+  __pyx_t_10 = 0;
   goto __pyx_L0;
 
   /* "model.pyx":13
@@ -2014,12 +1985,12 @@ static PyObject *__pyx_pf_5model_model(CYTHON_UNUSED PyObject *__pyx_self, PyArr
  * @cython.wraparound(False)  # turn off negative index wrapping for entire function
  * def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):             # <<<<<<<<<<<<<<
  * 
- * 	cdef double m = y[0]
+ * 	cdef double alpha = y[0]
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_10);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -4719,23 +4690,23 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
+  {&__pyx_n_s_K, __pyx_k_K, sizeof(__pyx_k_K), 0, 0, 1, 1},
   {&__pyx_n_s_L1, __pyx_k_L1, sizeof(__pyx_k_L1), 0, 0, 1, 1},
-  {&__pyx_n_s_L2, __pyx_k_L2, sizeof(__pyx_k_L2), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
+  {&__pyx_n_s_S1, __pyx_k_S1, sizeof(__pyx_k_S1), 0, 0, 1, 1},
+  {&__pyx_n_s_S2, __pyx_k_S2, sizeof(__pyx_k_S2), 0, 0, 1, 1},
+  {&__pyx_n_s_S3, __pyx_k_S3, sizeof(__pyx_k_S3), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_alpha, __pyx_k_alpha, sizeof(__pyx_k_alpha), 0, 0, 1, 1},
-  {&__pyx_n_s_beta, __pyx_k_beta, sizeof(__pyx_k_beta), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_delta, __pyx_k_delta, sizeof(__pyx_k_delta), 0, 0, 1, 1},
   {&__pyx_n_s_derivs, __pyx_k_derivs, sizeof(__pyx_k_derivs), 0, 0, 1, 1},
-  {&__pyx_n_s_gamma, __pyx_k_gamma, sizeof(__pyx_k_gamma), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
-  {&__pyx_n_s_kmat, __pyx_k_kmat, sizeof(__pyx_k_kmat), 0, 0, 1, 1},
-  {&__pyx_n_s_m, __pyx_k_m, sizeof(__pyx_k_m), 0, 0, 1, 1},
+  {&__pyx_n_s_k1, __pyx_k_k1, sizeof(__pyx_k_k1), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_model, __pyx_k_model, sizeof(__pyx_k_model), 0, 0, 1, 1},
   {&__pyx_kp_s_model_pyx, __pyx_k_model_pyx, sizeof(__pyx_k_model_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_n, __pyx_k_n, sizeof(__pyx_k_n), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
@@ -4743,9 +4714,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
-  {&__pyx_n_s_p, __pyx_k_p, sizeof(__pyx_k_p), 0, 0, 1, 1},
   {&__pyx_n_s_params, __pyx_k_params, sizeof(__pyx_k_params), 0, 0, 1, 1},
-  {&__pyx_n_s_pmat, __pyx_k_pmat, sizeof(__pyx_k_pmat), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_t, __pyx_k_t, sizeof(__pyx_k_t), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
@@ -4849,12 +4818,12 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * @cython.wraparound(False)  # turn off negative index wrapping for entire function
  * def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):             # <<<<<<<<<<<<<<
  * 
- * 	cdef double m = y[0]
+ * 	cdef double alpha = y[0]
  */
-  __pyx_tuple__8 = PyTuple_Pack(14, __pyx_n_s_y, __pyx_n_s_t, __pyx_n_s_params, __pyx_n_s_m, __pyx_n_s_p, __pyx_n_s_pmat, __pyx_n_s_alpha, __pyx_n_s_beta, __pyx_n_s_gamma, __pyx_n_s_delta, __pyx_n_s_kmat, __pyx_n_s_L1, __pyx_n_s_L2, __pyx_n_s_derivs); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(12, __pyx_n_s_y, __pyx_n_s_t, __pyx_n_s_params, __pyx_n_s_alpha, __pyx_n_s_S1, __pyx_n_s_S2, __pyx_n_s_S3, __pyx_n_s_L1, __pyx_n_s_k1, __pyx_n_s_K, __pyx_n_s_n, __pyx_n_s_derivs); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(3, 0, 14, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_model_pyx, __pyx_n_s_model, 13, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(3, 0, 12, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_model_pyx, __pyx_n_s_model, 13, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5177,7 +5146,7 @@ if (!__Pyx_RefNanny) {
  * @cython.wraparound(False)  # turn off negative index wrapping for entire function
  * def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):             # <<<<<<<<<<<<<<
  * 
- * 	cdef double m = y[0]
+ * 	cdef double alpha = y[0]
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5model_1model, NULL, __pyx_n_s_model); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);

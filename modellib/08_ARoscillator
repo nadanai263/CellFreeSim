@@ -1,0 +1,34 @@
+// Created by libAntimony v2.9.4
+// Negative feedback oscillator
+// S1 activates S2; S2 represses S1
+// Repression has to be released so
+// S2 has to be diluted/degraded sufficiently
+// This oscillator requires fine-tuning
+// A time delay is required
+// Degradation is required
+// Large cooperativity is required
+
+// Compartments and Species:
+species alpha, S1, S2, S3;
+
+// Reactions:
+_J0: alpha -> ; alpha*L1;
+_J1:  -> S1; alpha*k1*K1^n/(K1^n+S3^n) - delta1*S1;
+_J2:  -> S2; alpha*k1*S1^n/(K2^n+S1^n) - delta2*S2 - kmat*S2;
+_J3:  -> S3; kmat*S2 - delta2*S3 // Matured repressor
+
+// Species initializations:
+alpha = 1;
+S1 = 0.0;
+S2 = 0.0;
+S3 = 0.0;
+
+// Variable initializations:
+L1 = 0.01;
+k1 = 0.1;
+K1 = 0.01; // repression strength
+K2 = 0.01; // activation strength
+n = 4;
+delta1 = 0.03;
+delta2 = 0.03;
+kmat = 0.01;

@@ -1,0 +1,37 @@
+// Created by libAntimony v2.9.4
+// PI control
+
+
+// Compartments and Species:
+species alpha, S1, S2, S3, S4, S5, setpoint;
+
+// Reactions:
+_J0: alpha -> ; alpha*L1;
+_J1:  -> S1; alpha*k1*S4^n/(K1^n+S4^n)- delta*S1;
+_J2:  -> S2; alpha*k1*S4^n/(K1^n+S4^n)*S1^n/(K2^n+S1^n) - delta*S2;
+_J3:  -> S3; alpha*k1*S4^n/(K1^n+S4^n)*K3^n/(K3^n+S2^n)*K3^n/(K3^n+S5^n) - delta*S3;
+_J4:  -> S4; alpha*k1*K4^n/(K4^n+S3^n) - delta*S4;
+_J5:  -> S5; alpha*k1*S4^n/(K1^n+S4^n) - delta*S5;
+_J6: -> setpoint; 0;
+
+// Species initializations:
+alpha = 1;
+S1 = 1.0;
+S2 = 0.0;
+S3 = 0.0;
+S4 = 0.0;
+S5 = 0.0;
+
+// Variable initializations:
+L1 = 0.0;
+k1 = 0.5;
+K1 = 0.1;
+K2 = 0.1;
+K3 = 0.01;
+K4 = 0.1;
+n = 2;
+delta = 0.3;
+
+setpoint = 0;
+
+// Other declarations:

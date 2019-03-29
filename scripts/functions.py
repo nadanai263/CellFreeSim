@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import tellurium as te # 2.1.5
 import numpy as np
 import sys
+import progressbar as progressbar
+import emcee
 from scipy.integrate import odeint
 
 #-----------------------------------------------------------------------------
@@ -26,6 +28,9 @@ def parseODEs(r,odes):
     derivdict = {}
     for deriv in derivs:
         derivdict[deriv.split(' = ')[0]] = deriv.split(' = ')[1]
+
+    print(derivdict)
+    print(channeldict)
 
     speciesIds = []
     derivatives = []
@@ -102,6 +107,7 @@ def chemostatExperiment(chemostatinputs):
     INTERVAL_IMG = chemostatinputs['interval_img']
     DIL_FRAC = chemostatinputs['dil_frac']
     INDEX_REFRESH = chemostatinputs['index_refresh']
+    CONC_REFRESH = chemostatinputs['conc_refresh']
     cymodel = chemostatinputs['cymodel']
 
     ndim = y0.shape[0]
@@ -135,8 +141,11 @@ def chemostatExperiment(chemostatinputs):
 
         # Dilute everything and refresh appropriate species
         yTransfer = psoln[-1,:]*(1-DIL_FRAC)
+
+        j=0
         for ind in INDEX_REFRESH:
-            yTransfer[ind] = yTransfer[ind]+DIL_FRAC*1
+            yTransfer[ind] = yTransfer[ind]+DIL_FRAC*CONC_REFRESH[j]
+            j+=1
 
         dataout[0,:] = y0
 
@@ -153,42 +162,48 @@ def normalprior(param,mu,sigma):
 def lnlike(theta, chemostatinputs, mcmc_inputs):
     ''' Log likelihood, the function to maximise'''
 
-    # We will infer experimental errors
-    lnparam0, lnparam1 = theta
+    lnparams = [j for j in theta]
 
     # This has to be an array if more than one parameter, otherwise just a float
     paramstmp = chemostatinputs['params']
-    paramstmp[int(mcmc_inputs['paramchannels'][0])] = np.exp(lnparam0)
-    paramstmp[int(mcmc_inputs['paramchannels'][1])] = np.exp(lnparam1)
+    for i in range(len(mcmc_inputs['paramchannels'])):
+        paramstmp[int(mcmc_inputs['paramchannels'][i])] = np.exp(lnparams[i])
     chemostatinputs['params'] = paramstmp
-
     timeTotal,sim_dataout = chemostatExperiment(chemostatinputs)
 
-    y_obs = mcmc_inputs['data']
-    y_model = sim_dataout[:,int(mcmc_inputs['datachannel'])]
-    INVS2 = 1/mcmc_inputs['yerr']**2
+    X0s = []
+    for j in range(len(mcmc_inputs['datachannels'])):
+        y_obs = mcmc_inputs['data'][j]
+        y_model = sim_dataout[:,int(mcmc_inputs['datachannels'][j])]
+        INVS2 = 1/mcmc_inputs['yerr']**2
+        X0=-0.5*(np.sum((y_obs-y_model)**2*INVS2+np.log(2*np.pi*1/INVS2)))
+        X0s.append(X0)
 
-    X0=-0.5*(np.sum((y_obs-y_model)**2*INVS2+np.log(2*np.pi*1/INVS2)))
-
-    return X0
+    return sum(X0s)
 
 def lnprior(theta, mcmc_inputs):
-    lnparam0, lnparam1 = theta
+    ''' Log priors'''
+    lnparams = [j for j in theta]
 
     priorMus = mcmc_inputs['priorMuSigma'][0]
     priorSigmas = mcmc_inputs['priorMuSigma'][1]
 
-    log_PRs=[
-            normalprior(lnparam0,priorMus[0],priorSigmas[0]),
-            normalprior(lnparam1,priorMus[1],priorSigmas[1])
-            ]
+    log_PRs = []
+    for j in range(len(lnparams)):
+        log_PRs.append(normalprior(lnparams[j],priorMus[j],priorSigmas[j]))
     return np.sum(log_PRs)
 
 def lnprob(theta,chemostatinputs, mcmc_inputs):
+    ''' Log posterior'''
     lp = lnprior(theta, mcmc_inputs)
     if not np.isfinite(lp):
         return -np.inf
-    return lp + lnlike(theta,chemostatinputs, mcmc_inputs)
+    # How to properly account for NaNs turning up in lnlike?
+    # This is NOT the way to do it:
+    if np.isnan(lp + lnlike(theta,chemostatinputs, mcmc_inputs)):
+        return -np.inf
+    else:
+        return lp + lnlike(theta,chemostatinputs, mcmc_inputs)
 
 def gelman_rubin(chain):
     ''' Gelman-Rubin diagnostic for one walker across all parameters. This value should tend to 1. '''
@@ -202,3 +217,130 @@ def gelman_rubin(chain):
     varT=(n-1)/n*W+1/n*B
     Rhat=np.sqrt(varT/W)
     return Rhat
+
+def runMCMC(speciesValues,parameterValues,TMAX,INTERVAL_DIL,INTERVAL_IMG,
+            dilutiontimes,DIL_FRAC,INDEX_REFRESH,CONC_REFRESH,model,
+            DATACHANNELS,PARAMCHANNELS,PMUSIGMA,SIGMA,
+            iterations,nwalkers,nDimParams,threads,pos,tburn):
+
+    y0 = np.array([float(value) for value in speciesValues])
+    params = np.array([float(value) for value in parameterValues])
+
+    if TMAX%INTERVAL_DIL!=0:
+        print('\n')
+        print('TMAX is not divisible by INTERVAL_DIL!\n')
+        print('Inaccurate results expected!\n')
+
+    if INTERVAL_DIL%INTERVAL_IMG!=0:
+        print('\n')
+        print('INTERVAL_DIL is not divisible by INTERVAL_IMG!\n')
+        print('Inaccurate results expected!\n')
+
+    cinputkeys = ['dilutiontimes', 'y0', 'params', 'interval_img', 'dil_frac', 'index_refresh', 'conc_refresh','cymodel']
+    cinputvalues = [dilutiontimes, y0, params, INTERVAL_IMG, DIL_FRAC, INDEX_REFRESH, CONC_REFRESH, model.model]
+    chemostatinputs = dict(zip(cinputkeys,cinputvalues))
+
+    # Generate silico data
+    timeTotal,dataout = chemostatExperiment(chemostatinputs)
+    mcmc_inputs = {}
+    mcmc_inputs['data'] = [dataout[:,channel] for channel in DATACHANNELS]
+    mcmc_inputs['priorMuSigma'] = PMUSIGMA
+    mcmc_inputs['yerr'] = SIGMA
+    mcmc_inputs['datachannels'] = DATACHANNELS
+    mcmc_inputs['paramchannels'] = PARAMCHANNELS
+
+
+    ##### The rest of the code is automatic #####
+    sampler=emcee.EnsembleSampler(nwalkers,nDimParams,lnprob,a=2,args=([chemostatinputs, mcmc_inputs]),threads=threads)
+
+    ### Start MCMC
+    iter=iterations
+    bar=progressbar.ProgressBar(max_value=iter)
+    for i, result in enumerate(sampler.sample(pos, iterations=iter)):
+        bar.update(i)
+    ### Finish MCMC
+
+    samples=sampler.chain[:,:,:].reshape((-1,nDimParams)) # shape = (nsteps, nDimParams)
+    samplesnoburn=sampler.chain[:,tburn:,:].reshape((-1,nDimParams)) # shape = (nsteps, nDimParams)
+
+    return(samplesnoburn, chemostatinputs, mcmc_inputs, timeTotal, dataout)
+
+
+# Plotting
+
+def plotInitialise(figW,figH):
+
+    plt.close("all")
+    figure_options={'figsize':(figW,figH)} # figure size in inches. A4=11.7x8.3, A5=8.3,5.8
+    font_options={'size':'14','family':'sans-serif','sans-serif':'Arial'}
+    plt.rc('figure', **figure_options)
+    plt.rc('font', **font_options)
+
+def plotFormat(ax,xlabel=False,
+                    ylabel=False,
+                    xlim=False,
+                    ylim=False,
+                    title=False,
+                    xticks=False,
+                    yticks=False,
+                    logx=False,
+                    logy=False,
+                    logxy=False,
+                    symlogx=False,
+                    legend=False):
+
+    # Set titles and labels
+    if title!=False:
+        ax.set_title(title)
+    if xlabel!=False:
+        ax.set_xlabel(xlabel, labelpad=12)
+    if ylabel!=False:
+        ax.set_ylabel(ylabel, labelpad=12)
+
+    # Set axis limits
+    if xlim!=False:
+        ax.set_xlim(xlim)
+    if ylim!=False:
+        ax.set_ylim(ylim)
+
+    # Set tick values
+    if xticks!=False:
+        ax.set_xticks(xticks)
+    if yticks!=False:
+        ax.set_yticks(yticks)
+
+    # Set line thicknesses
+    #ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter("%1.e"))
+    #ax.axhline(linewidth=2, color='k')
+    #ax.axvline(linewidth=2, color='k')
+    ax.spines['bottom'].set_linewidth(2)
+    ax.spines['top'].set_linewidth(2)
+    ax.spines['left'].set_linewidth(2)
+    ax.spines['right'].set_linewidth(2)
+
+    # Set ticks
+    if logx==True:
+        ax.set_xscale("log")
+
+    elif logy==True:
+        ax.set_yscale("log")
+
+    elif logxy==True:
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+
+    elif symlogx==True:
+        ax.set_xscale("symlog",linthreshx=1e-4)
+        ax.set_yscale("log")
+
+    else:
+        minorLocatorx=AutoMinorLocator(2) # Number of minor intervals per major interval
+        minorLocatory=AutoMinorLocator(2)
+        ax.xaxis.set_minor_locator(minorLocatorx)
+        ax.yaxis.set_minor_locator(minorLocatory)
+
+    ax.tick_params(which='major', width=2, length=8, pad=9,direction='in',top='on',right='on')
+    ax.tick_params(which='minor', width=2, length=4, pad=9,direction='in',top='on',right='on')
+
+    if legend==True:
+        ax.legend(loc='upper right', fontsize=14,numpoints=1) ### Default 'best'

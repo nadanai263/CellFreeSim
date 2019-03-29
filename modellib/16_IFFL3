@@ -1,0 +1,27 @@
+// Created by libAntimony v2.9.4
+// Type 3 incoherent FFL
+// Pulse generator
+
+// Compartments and Species:
+species alpha, S1, S2, S3;
+
+// Reactions:
+_J0: alpha -> ; alpha*L1;
+_J1:  -> S1; alpha*k0;
+_J2:  -> S2; alpha*k1*S1^n/(K1^n+S1^n);
+_J3:  -> S3; alpha*k1*K3^n/(K3^n+S1^n)*S2^n/(K2^n+S2^n);
+
+// Species initializations:
+alpha = 1;
+S1 = 0.0;
+S2 = 0.0;
+S3 = 0.0;
+
+// Variable initializations:
+L1 = 0.01;
+k0 = 0.1;
+k1 = 0.3;
+K1 = 0.1;
+K2 = 1;
+K3 = 1;
+n = 2;

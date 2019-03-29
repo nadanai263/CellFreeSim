@@ -64,7 +64,6 @@ def main():
         elif commands_str=='2':
             # 2. Generate cython file
             print('Generating cython file')
-
             cfs.writeCython(speciesIds,speciesValues,parameterIds,parameterValues,derivatives,PATH_OUT,FILENAME_OUT)
             print('\n\n\n')
 
@@ -111,8 +110,9 @@ def main():
                 print('INTERVAL_DIL is not divisible by INTERVAL_IMG!\n')
                 print('Inaccurate results expected!\n')
 
-            cinputkeys = ['dilutiontimes', 'y0', 'params', 'interval_img', 'dil_frac', 'index_refresh', 'cymodel']
-            cinputvalues = [dilutiontimes, y0, params, INTERVAL_IMG, DIL_FRAC, INDEX_REFRESH, model.model]
+
+            cinputkeys = ['dilutiontimes', 'y0', 'params', 'interval_img', 'dil_frac', 'index_refresh', 'conc_refresh','cymodel']
+            cinputvalues = [dilutiontimes, y0, params, INTERVAL_IMG, DIL_FRAC, INDEX_REFRESH, CONC_REFRESH, model.model]
             chemostatinputs = dict(zip(cinputkeys,cinputvalues))
 
             timeTotal,dataout = cfs.chemostatExperiment(chemostatinputs)
@@ -137,44 +137,11 @@ def main():
             sys.path.insert(0, PATH_OUT)
             import model as model
 
-            y0 = np.array([float(value) for value in speciesValues])
-            params = np.array([float(value) for value in parameterValues])
-
-            if TMAX%INTERVAL_DIL!=0:
-                print('\n')
-                print('TMAX is not divisible by INTERVAL_DIL!\n')
-                print('Inaccurate results expected!\n')
-
-            if INTERVAL_DIL%INTERVAL_IMG!=0:
-                print('\n')
-                print('INTERVAL_DIL is not divisible by INTERVAL_IMG!\n')
-                print('Inaccurate results expected!\n')
-
-            cinputkeys = ['dilutiontimes', 'y0', 'params', 'interval_img', 'dil_frac', 'index_refresh', 'cymodel']
-            cinputvalues = [dilutiontimes, y0, params, INTERVAL_IMG, DIL_FRAC, INDEX_REFRESH, model.model]
-            chemostatinputs = dict(zip(cinputkeys,cinputvalues))
-
-            # Generate silico data
-            timeTotal,dataout = cfs.chemostatExperiment(chemostatinputs)
-            mcmc_inputs = {}
-            mcmc_inputs['data'] = dataout[:,DATACHANNEL]
-            mcmc_inputs['priorMuSigma'] = PMUSIGMA
-            mcmc_inputs['yerr'] = SIGMA
-            mcmc_inputs['datachannel'] = DATACHANNEL
-            mcmc_inputs['paramchannels'] = PARAMCHANNELS
-
-            ##### The rest of the code is automatic #####
-            sampler=emcee.EnsembleSampler(nwalkers,nDimParams,cfs.lnprob,a=2,args=([chemostatinputs, mcmc_inputs]),threads=threads)
-
-            ### Start MCMC
-            iter=iterations
-            bar=progressbar.ProgressBar(max_value=iter)
-            for i, result in enumerate(sampler.sample(pos, iterations=iter)):
-                bar.update(i)
-            ### Finish MCMC
-
-            samples=sampler.chain[:,:,:].reshape((-1,nDimParams)) # shape = (nsteps, nDimParams)
-            samplesnoburn=sampler.chain[:,tburn:,:].reshape((-1,nDimParams)) # shape = (nsteps, nDimParams)
+            (samplesnoburn, chemostatinputs, mcmc_inputs, timeTotal, dataout) = cfs.runMCMC(speciesValues,parameterValues,
+                                                                                TMAX,INTERVAL_DIL,INTERVAL_IMG,
+                                                                                dilutiontimes,DIL_FRAC,INDEX_REFRESH,CONC_REFRESH,model,
+                                                                                DATACHANNELS,PARAMCHANNELS,PMUSIGMA,SIGMA,
+                                                                                iterations,nwalkers,nDimParams,threads,pos,tburn)
 
 #            import pandas as pd
 #            df=pd.DataFrame(samples)
@@ -184,17 +151,21 @@ def main():
             # Plot model predictions
             #-----------------------
 
-            for i in range(dataout.shape[1]):
-                plt.plot(timeTotal,mcmc_inputs['data'],'o-');
+#            cfs.plotInitialise(4,4)
+            for i in range(len(mcmc_inputs['data'])):
+                plt.plot(timeTotal/60,mcmc_inputs['data'][i],'o-');
 
-            for lnparam0, lnparam1 in samplesnoburn[np.random.randint(len(samplesnoburn), size=20)]:
+            inds = np.random.randint(len(samplesnoburn), size=NMODELRUNS)
+            for ind in inds:
+                lnparams = [param for param in samplesnoburn[ind]]
                 # Unpack and repack params
                 paramstmp = chemostatinputs['params']
-                paramstmp[int(mcmc_inputs['paramchannels'][0])] = np.exp(lnparam0)
-                paramstmp[int(mcmc_inputs['paramchannels'][1])] = np.exp(lnparam1)
+                for i in range(len(mcmc_inputs['paramchannels'])):
+                    paramstmp[int(mcmc_inputs['paramchannels'][i])] = np.exp(lnparams[i])
                 chemostatinputs['params'] = paramstmp
                 sim_timeTotal,sim_dataout = cfs.chemostatExperiment(chemostatinputs)
-                plt.plot(sim_timeTotal,sim_dataout[:,int(mcmc_inputs['datachannel'])],'k-', alpha=0.1)
+                for j in range(len(mcmc_inputs['datachannels'])):
+                    plt.plot(sim_timeTotal/60,sim_dataout[:,int(mcmc_inputs['datachannels'][j])],'k-', alpha=0.1)
             plt.savefig(PATH_PLOT+'MCMC_preds.pdf')
             plt.show();
 
@@ -207,6 +178,7 @@ def main():
             plt.savefig(PATH_PLOT+'MCMC_triangle.pdf')
             plt.show();
             print('\n\n\n')
+
 
         elif commands_str=='':
             # Press ENTER to exit without saving

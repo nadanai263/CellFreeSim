@@ -12,24 +12,21 @@ from libc.math cimport pow
 @cython.wraparound(False)  # turn off negative index wrapping for entire function
 def model(np.ndarray[np.float64_t,ndim=1] y, double t, np.ndarray[np.float64_t,ndim=1] params):
 
-	cdef double m = y[0]
-	cdef double p = y[1]
-	cdef double pmat = y[2]
-	cdef double alpha = y[3]
-	cdef double beta = y[4]
+	cdef double alpha = y[0]
+	cdef double S1 = y[1]
+	cdef double S2 = y[2]
+	cdef double S3 = y[3]
 
-	cdef double gamma = params[0]
-	cdef double delta = params[1]
-	cdef double kmat = params[2]
-	cdef double L1 = params[3]
-	cdef double L2 = params[4]
+	cdef double L1 = params[0]
+	cdef double k1 = params[1]
+	cdef double K = params[2]
+	cdef double n = params[3]
 
-	cdef double derivs[5]
+	cdef double derivs[4]
 
 	derivs = [
-	alpha-gamma*m,
-	beta*m-delta*p-kmat*p,
-	kmat*p-delta*pmat,
-	-L1*alpha,
-	-L2*beta]
+	-alpha*L1,
+	alpha*k1*pow(K,n)/(pow(K,n)+pow(S3,n)),
+	alpha*k1*pow(K,n)/(pow(K,n)+pow(S1,n)),
+	alpha*k1*pow(K,n)/(pow(K,n)+pow(S2,n))]
 	return derivs

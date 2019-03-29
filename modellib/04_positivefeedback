@@ -1,0 +1,18 @@
+// Created by libAntimony v2.9.4
+// Compartments and Species:
+species alpha, S1;
+
+// Reactions:
+_J0: alpha -> ; alpha*L1;
+_J1:  -> S1; alpha*k0+alpha*k1*S1^n/(K^n+S1^n);
+
+// Species initializations:
+alpha = 1;
+S1 = 0;
+
+// Variable initializations:
+L1 = 0.01;
+k0 = 0.01;
+k1 = 0.1;
+K = 0.05;
+n = 2;

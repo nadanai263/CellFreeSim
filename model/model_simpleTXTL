@@ -1,16 +1,16 @@
 // Created by libAntimony v2.9.4
 // Compartments and Species:
-species m, p, pmat, alpha, beta;
+species alpha, beta, m, p, pmat;
 
 // Reactions:
 J1: -> m ; alpha - gamma*m;
-J2: -> p ; beta*m - delta*p-kmat*p;
-J3: -> pmat ; kmat*p-delta*pmat;
+J2: -> p ; beta*m - kmat*p;
+J3: -> pmat ; kmat*p;
 J4: alpha ->; L1*alpha;
-J5: beta ->; L2*beta;
+J5: beta -> ; L2*beta;
 
 // Species initializations:
-m=0; p=0; pmat=0; alpha=1; beta=1;
+m=0; p=0; pmat=0; alpha=1; beta=0.5;
 
 // Variable initializations:
-delta=0; gamma=0.1; kmat=0.1; L1=0.1; L2=0.1;
+gamma=0.1; kmat=0.1; L1=0.01; L2=0.05;
